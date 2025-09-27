@@ -1,103 +1,259 @@
-import Image from "next/image";
+"use client";
+
+import { motion } from "framer-motion";
+import {
+  useScrollAnimation,
+  fadeInUp,
+  scaleIn,
+  staggerContainer,
+  staggerItem,
+  prefersReducedMotion,
+} from "../lib/animations";
+//import WeatherWidget from "../components/WeatherWidget";
+import dynamic from "next/dynamic";
+
+// Lazy load Testimonials for better performance
+const Testimonials = dynamic(() => import("../components/Testimonials"), {
+  loading: () => (
+    <div className="py-20 text-center">
+      <div className="animate-pulse text-neon-cyan/50">
+        Loading testimonials...
+      </div>
+    </div>
+  ),
+});
+
+// Lazy load the 3D cosmic sphere for performance
+const CosmicSphere = dynamic(() => import("../components/CosmicSphere"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-64 h-64 bg-cosmic-blue/20 rounded-full animate-pulse" />
+  ),
+});
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { ref: heroRef, inView: heroInView } = useScrollAnimation();
+  const { ref: featuresRef, inView: featuresInView } = useScrollAnimation();
+  const reducedMotion = prefersReducedMotion();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const features = [
+    {
+      title: "AI-Powered Innovation",
+      description:
+        "Harnessing the power of artificial intelligence to create groundbreaking solutions.",
+      icon: "🤖",
+    },
+    {
+      title: "Quantum Computing",
+      description:
+        "Exploring the frontiers of quantum mechanics for unprecedented computational power.",
+      icon: "⚛️",
+    },
+    {
+      title: "Space Exploration",
+      description:
+        "Pushing the boundaries of human knowledge through advanced space technology.",
+      icon: "🚀",
+    },
+    {
+      title: "Sustainable Tech",
+      description:
+        "Developing eco-friendly technologies that protect our planet while advancing humanity.",
+      icon: "🌱",
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-cosmic-blue text-neon-cyan pt-16">
+      {/* Hero Section */}
+      <section
+        ref={heroRef}
+        className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      >
+        <div className="container mx-auto px-4 text-center">
+          <motion.div
+            initial={reducedMotion ? {} : { opacity: 0, y: 50 }}
+            animate={heroInView && !reducedMotion ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl mx-auto"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <motion.h1
+              initial={reducedMotion ? {} : { opacity: 0, scale: 0.5 }}
+              animate={
+                heroInView && !reducedMotion ? { opacity: 1, scale: 1 } : {}
+              }
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-neon-cyan via-organic-green to-holographic-purple bg-clip-text text-transparent"
+            >
+              Cosmic Nexus
+            </motion.h1>
+            <motion.p
+              initial={reducedMotion ? {} : { opacity: 0, y: 30 }}
+              animate={heroInView && !reducedMotion ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+              className="text-xl md:text-2xl text-neon-cyan/80 mb-8 max-w-2xl mx-auto"
+            >
+              Blending futuristic technology with nature&apos;s wonders to
+              create extraordinary digital experiences
+            </motion.p>
+            <motion.div
+              initial={reducedMotion ? {} : { opacity: 0, y: 20 }}
+              animate={heroInView && !reducedMotion ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <motion.button
+                whileHover={
+                  reducedMotion
+                    ? {}
+                    : {
+                        scale: 1.05,
+                        boxShadow: "0 0 25px rgba(0, 255, 255, 0.4)",
+                      }
+                }
+                whileTap={reducedMotion ? {} : { scale: 0.95 }}
+                className="px-8 py-3 bg-gradient-to-r from-neon-cyan to-organic-green text-cosmic-blue font-bold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Explore Portfolio
+              </motion.button>
+              <motion.button
+                whileHover={
+                  reducedMotion
+                    ? {}
+                    : {
+                        scale: 1.05,
+                        boxShadow: "0 0 25px rgba(138, 43, 226, 0.4)",
+                      }
+                }
+                whileTap={reducedMotion ? {} : { scale: 0.95 }}
+                className="px-8 py-3 border-2 border-holographic-purple text-holographic-purple font-bold rounded-lg hover:bg-holographic-purple hover:text-cosmic-blue transition-all duration-300"
+              >
+                Learn More
+              </motion.button>
+            </motion.div>
+          </motion.div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        {/* Floating elements */}
+        <motion.div
+          animate={
+            reducedMotion
+              ? {}
+              : {
+                  y: [0, -20, 0],
+                  rotate: [0, 5, 0],
+                }
+          }
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute top-20 left-10 text-6xl opacity-20"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          ⚡
+        </motion.div>
+        <motion.div
+          animate={
+            reducedMotion
+              ? {}
+              : {
+                  y: [0, 20, 0],
+                  rotate: [0, -5, 0],
+                }
+          }
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1,
+          }}
+          className="absolute bottom-20 right-10 text-6xl opacity-20"
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          🌌
+        </motion.div>
+
+        {/* Weather Widget */}
+        <motion.div
+          initial={reducedMotion ? {} : { opacity: 0, x: 50 }}
+          animate={heroInView && !reducedMotion ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, delay: 1 }}
+          className="absolute top-8 right-8 max-w-xs"
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          {/* <WeatherWidget /> */}
+        </motion.div>
+
+        {/* 3D Cosmic Sphere */}
+        <motion.div
+          initial={reducedMotion ? {} : { opacity: 0, scale: 0.5 }}
+          animate={
+            heroInView && !reducedMotion ? { opacity: 0.6, scale: 1 } : {}
+          }
+          transition={{ duration: 1.5, delay: 0.8 }}
+          className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 pointer-events-none"
+        >
+          <CosmicSphere />
+        </motion.div>
+      </section>
+
+      {/* Features Section */}
+      <section
+        ref={featuresRef}
+        className="py-20 bg-gradient-to-b from-transparent to-cosmic-blue/50"
+      >
+        <div className="container mx-auto px-4">
+          <motion.h2
+            variants={fadeInUp}
+            initial={reducedMotion ? {} : "hidden"}
+            animate={featuresInView && !reducedMotion ? "visible" : {}}
+            className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-neon-cyan to-organic-green bg-clip-text text-transparent"
+          >
+            Our Expertise
+          </motion.h2>
+
+          <motion.div
+            variants={staggerContainer}
+            initial={reducedMotion ? {} : "hidden"}
+            animate={featuresInView && !reducedMotion ? "visible" : {}}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                variants={staggerItem}
+                whileHover={
+                  reducedMotion
+                    ? {}
+                    : {
+                        y: -10,
+                        boxShadow: "0 20px 40px rgba(0, 255, 255, 0.1)",
+                      }
+                }
+                className="bg-gradient-to-br from-cosmic-blue to-holographic-purple/20 p-6 rounded-xl border border-neon-cyan/20 hover:border-neon-cyan/50 transition-all duration-300"
+              >
+                <motion.div
+                  initial={reducedMotion ? {} : { scale: 0 }}
+                  animate={featuresInView && !reducedMotion ? { scale: 1 } : {}}
+                  transition={{
+                    delay: index * 0.1 + 0.5,
+                    duration: 0.5,
+                    type: "spring",
+                  }}
+                  className="text-4xl mb-4"
+                >
+                  {feature.icon}
+                </motion.div>
+                <h3 className="text-xl font-bold mb-2 text-neon-cyan">
+                  {feature.title}
+                </h3>
+                <p className="text-neon-cyan/70">{feature.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      <Testimonials />
     </div>
   );
 }
