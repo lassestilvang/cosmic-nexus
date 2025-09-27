@@ -1,5 +1,7 @@
 # Cosmic Nexus
 
+<img width="2175" height="1278" alt="image" src="https://github.com/user-attachments/assets/0c9f1ace-dab7-4af5-a679-2c3092f50578" />
+
 ## Description
 
 Cosmic Nexus is a showcase website that blends futuristic technology with nature's wonders to create extraordinary digital experiences. It serves as a portfolio platform featuring interactive 3D visualizations, a blog with technical content, and modern web development practices, all themed around cosmic and organic elements. Explore the intersection of AI, quantum computing, and sustainable tech through immersive interfaces that push the boundaries of web innovation.
