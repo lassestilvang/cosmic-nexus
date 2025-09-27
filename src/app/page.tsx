@@ -27,7 +27,6 @@ const Testimonials = dynamic(() => import("../components/Testimonials"), {
 });
 
 export default function Home() {
-  const { ref: heroRef, inView: heroInView } = useScrollAnimation();
   const { ref: featuresRef, inView: featuresInView } = useScrollAnimation();
   const reducedMotion = prefersReducedMotion();
   const [hasMounted, setHasMounted] = useState(false);
@@ -36,21 +35,17 @@ export default function Home() {
     setHasMounted(true);
   }, []);
 
-  // Fallback: if component has mounted but inView is still false after 1 second, assume it's visible
   const [heroVisible, setHeroVisible] = useState(false);
   const [featuresVisible, setFeaturesVisible] = useState(false);
 
+  // Trigger hero animation on page load
   useEffect(() => {
     if (hasMounted && !reducedMotion) {
-      const timer = setTimeout(() => {
-        if (!heroVisible) {
-          setHeroVisible(true);
-        }
-      }, 1000);
-      return () => clearTimeout(timer);
+      setHeroVisible(true);
     }
-  }, [hasMounted, reducedMotion, heroVisible]);
+  }, [hasMounted, reducedMotion]);
 
+  // Fallback for features: if not visible after 1.5 seconds, assume visible
   useEffect(() => {
     if (hasMounted && !reducedMotion) {
       const timer = setTimeout(() => {
@@ -61,10 +56,6 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
   }, [hasMounted, reducedMotion, featuresVisible]);
-
-  useEffect(() => {
-    if (heroInView) setHeroVisible(true);
-  }, [heroInView]);
 
   useEffect(() => {
     if (featuresInView) setFeaturesVisible(true);
@@ -101,7 +92,6 @@ export default function Home() {
     <div className="min-h-screen bg-cosmic-blue text-neon-cyan">
       {/* Hero Section */}
       <section
-        ref={heroRef}
         className="min-h-screen flex items-center justify-center relative overflow-hidden"
       >
         <div className="container mx-auto px-4 text-center">
@@ -125,7 +115,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
               className="text-xl md:text-2xl text-neon-cyan/80 mb-8 max-w-2xl mx-auto"
             >
-              Blending futuristic technology with nature's wonders to
+              Blending futuristic technology with nature&apos;s wonders to
               create extraordinary digital experiences
             </motion.p>
             <motion.div

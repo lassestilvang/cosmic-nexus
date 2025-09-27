@@ -10,37 +10,13 @@ interface MobileMenuProps {
 }
 
 const drawerVariants = {
-  closed: {
-    x: '-100%',
-    transition: {
-      type: 'tween',
-      duration: 0.3,
-      ease: 'easeInOut'
-    }
-  },
-  open: {
-    x: 0,
-    transition: {
-      type: 'tween',
-      duration: 0.3,
-      ease: 'easeInOut'
-    }
-  }
+  closed: { x: '-100%' },
+  open: { x: 0 }
 };
 
 const backdropVariants = {
-  closed: {
-    opacity: 0,
-    transition: {
-      duration: 0.3
-    }
-  },
-  open: {
-    opacity: 1,
-    transition: {
-      duration: 0.3
-    }
-  }
+  closed: { opacity: 0 },
+  open: { opacity: 1 }
 };
 
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
@@ -82,6 +58,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             animate="open"
             exit="closed"
             variants={backdropVariants}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={() => {
                         console.log('Nav link clicked');
@@ -95,6 +72,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             animate="open"
             exit="closed"
             variants={drawerVariants}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="fixed top-0 left-0 h-full w-80 bg-cosmic-blue border-r border-neon-cyan border-opacity-30 z-[60] shadow-2xl"
           >
             {/* Header with close button */}
