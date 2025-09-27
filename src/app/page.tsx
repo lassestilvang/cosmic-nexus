@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  useScrollAnimation,
   fadeInUp,
   scaleIn,
   staggerContainer,
@@ -27,7 +26,6 @@ const Testimonials = dynamic(() => import("../components/Testimonials"), {
 });
 
 export default function Home() {
-  const { ref: featuresRef, inView: featuresInView } = useScrollAnimation();
   const reducedMotion = prefersReducedMotion();
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -45,21 +43,12 @@ export default function Home() {
     }
   }, [hasMounted, reducedMotion]);
 
-  // Fallback for features: if not visible after 1.5 seconds, assume visible
+  // Trigger features animation on page load
   useEffect(() => {
     if (hasMounted && !reducedMotion) {
-      const timer = setTimeout(() => {
-        if (!featuresVisible) {
-          setFeaturesVisible(true);
-        }
-      }, 1500);
-      return () => clearTimeout(timer);
+      setFeaturesVisible(true);
     }
-  }, [hasMounted, reducedMotion, featuresVisible]);
-
-  useEffect(() => {
-    if (featuresInView) setFeaturesVisible(true);
-  }, [featuresInView]);
+  }, [hasMounted, reducedMotion]);
 
   const features = [
     {
@@ -222,7 +211,6 @@ export default function Home() {
       {/* Features Section */}
       <section
         id="expertise"
-        ref={featuresRef}
         className="py-20 bg-gradient-to-b from-transparent to-cosmic-blue/50"
       >
         <div className="container mx-auto px-4">
