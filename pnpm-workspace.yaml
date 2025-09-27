@@ -1,4 +1,9 @@
 onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
   - '@tsparticles/engine'
+  - esbuild
   - react-particles
+  - sharp
   - tsparticles-engine
+  - unrs-resolver
+  - workerd

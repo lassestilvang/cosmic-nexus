@@ -15,7 +15,7 @@ export default function About() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-center"
         >
-          <h1 className="text-4xl font-bold mb-8">About</h1>
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-neon-cyan to-organic-green bg-clip-text text-transparent">About</h1>
           <p className="text-lg">Learn more about the creator</p>
         </motion.div>
       </div>

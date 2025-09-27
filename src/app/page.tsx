@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   useScrollAnimation,
@@ -11,6 +12,8 @@ import {
 } from "../lib/animations";
 //import WeatherWidget from "../components/WeatherWidget";
 import dynamic from "next/dynamic";
+import CosmicSphere from "../components/CosmicSphere";
+import { useEffect, useState } from "react";
 
 // Lazy load Testimonials for better performance
 const Testimonials = dynamic(() => import("../components/Testimonials"), {
@@ -23,18 +26,49 @@ const Testimonials = dynamic(() => import("../components/Testimonials"), {
   ),
 });
 
-// Lazy load the 3D cosmic sphere for performance
-const CosmicSphere = dynamic(() => import("../components/CosmicSphere"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-64 h-64 bg-cosmic-blue/20 rounded-full animate-pulse" />
-  ),
-});
-
 export default function Home() {
   const { ref: heroRef, inView: heroInView } = useScrollAnimation();
   const { ref: featuresRef, inView: featuresInView } = useScrollAnimation();
   const reducedMotion = prefersReducedMotion();
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // Fallback: if component has mounted but inView is still false after 1 second, assume it's visible
+  const [heroVisible, setHeroVisible] = useState(false);
+  const [featuresVisible, setFeaturesVisible] = useState(false);
+
+  useEffect(() => {
+    if (hasMounted && !reducedMotion) {
+      const timer = setTimeout(() => {
+        if (!heroVisible) {
+          setHeroVisible(true);
+        }
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [hasMounted, reducedMotion, heroVisible]);
+
+  useEffect(() => {
+    if (hasMounted && !reducedMotion) {
+      const timer = setTimeout(() => {
+        if (!featuresVisible) {
+          setFeaturesVisible(true);
+        }
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [hasMounted, reducedMotion, featuresVisible]);
+
+  useEffect(() => {
+    if (heroInView) setHeroVisible(true);
+  }, [heroInView]);
+
+  useEffect(() => {
+    if (featuresInView) setFeaturesVisible(true);
+  }, [featuresInView]);
 
   const features = [
     {
@@ -64,7 +98,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-cosmic-blue text-neon-cyan pt-16">
+    <div className="min-h-screen bg-cosmic-blue text-neon-cyan">
       {/* Hero Section */}
       <section
         ref={heroRef}
@@ -73,15 +107,13 @@ export default function Home() {
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={reducedMotion ? {} : { opacity: 0, y: 50 }}
-            animate={heroInView && !reducedMotion ? { opacity: 1, y: 0 } : {}}
+            animate={heroVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-4xl mx-auto"
           >
             <motion.h1
               initial={reducedMotion ? {} : { opacity: 0, scale: 0.5 }}
-              animate={
-                heroInView && !reducedMotion ? { opacity: 1, scale: 1 } : {}
-              }
+              animate={heroVisible ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-neon-cyan via-organic-green to-holographic-purple bg-clip-text text-transparent"
             >
@@ -89,34 +121,37 @@ export default function Home() {
             </motion.h1>
             <motion.p
               initial={reducedMotion ? {} : { opacity: 0, y: 30 }}
-              animate={heroInView && !reducedMotion ? { opacity: 1, y: 0 } : {}}
+              animate={heroVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
               className="text-xl md:text-2xl text-neon-cyan/80 mb-8 max-w-2xl mx-auto"
             >
-              Blending futuristic technology with nature&apos;s wonders to
+              Blending futuristic technology with nature's wonders to
               create extraordinary digital experiences
             </motion.p>
             <motion.div
               initial={reducedMotion ? {} : { opacity: 0, y: 20 }}
-              animate={heroInView && !reducedMotion ? { opacity: 1, y: 0 } : {}}
+              animate={heroVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             >
+              <Link href="/portfolio">
+                <motion.button
+                  whileHover={
+                    reducedMotion
+                      ? {}
+                      : {
+                          scale: 1.05,
+                          boxShadow: "0 0 25px rgba(0, 255, 255, 0.4)",
+                        }
+                  }
+                  whileTap={reducedMotion ? {} : { scale: 0.95 }}
+                  className="px-8 py-3 h-12 flex items-center bg-gradient-to-r from-neon-cyan to-organic-green text-cosmic-blue font-bold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 relative z-10 cursor-pointer w-fit"
+                >
+                  Explore Portfolio
+                </motion.button>
+              </Link>
               <motion.button
-                whileHover={
-                  reducedMotion
-                    ? {}
-                    : {
-                        scale: 1.05,
-                        boxShadow: "0 0 25px rgba(0, 255, 255, 0.4)",
-                      }
-                }
-                whileTap={reducedMotion ? {} : { scale: 0.95 }}
-                className="px-8 py-3 bg-gradient-to-r from-neon-cyan to-organic-green text-cosmic-blue font-bold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                Explore Portfolio
-              </motion.button>
-              <motion.button
+                onClick={() => document.getElementById('expertise')?.scrollIntoView({ behavior: 'smooth' })}
                 whileHover={
                   reducedMotion
                     ? {}
@@ -126,7 +161,7 @@ export default function Home() {
                       }
                 }
                 whileTap={reducedMotion ? {} : { scale: 0.95 }}
-                className="px-8 py-3 border-2 border-holographic-purple text-holographic-purple font-bold rounded-lg hover:bg-holographic-purple hover:text-cosmic-blue transition-all duration-300"
+                className="px-8 py-3 h-12 flex items-center border-2 border-holographic-purple text-holographic-purple font-bold rounded-lg hover:bg-holographic-purple hover:text-cosmic-blue transition-all duration-300 relative z-20 cursor-pointer w-fit"
               >
                 Learn More
               </motion.button>
@@ -176,7 +211,7 @@ export default function Home() {
         {/* Weather Widget */}
         <motion.div
           initial={reducedMotion ? {} : { opacity: 0, x: 50 }}
-          animate={heroInView && !reducedMotion ? { opacity: 1, x: 0 } : {}}
+          animate={heroVisible ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 1 }}
           className="absolute top-8 right-8 max-w-xs"
         >
@@ -185,10 +220,8 @@ export default function Home() {
 
         {/* 3D Cosmic Sphere */}
         <motion.div
-          initial={reducedMotion ? {} : { opacity: 0, scale: 0.5 }}
-          animate={
-            heroInView && !reducedMotion ? { opacity: 0.6, scale: 1 } : {}
-          }
+          initial={reducedMotion ? {} : { opacity: 0 }}
+          animate={reducedMotion ? {} : { opacity: 0.6 }}
           transition={{ duration: 1.5, delay: 0.8 }}
           className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 pointer-events-none"
         >
@@ -198,6 +231,7 @@ export default function Home() {
 
       {/* Features Section */}
       <section
+        id="expertise"
         ref={featuresRef}
         className="py-20 bg-gradient-to-b from-transparent to-cosmic-blue/50"
       >
@@ -205,7 +239,7 @@ export default function Home() {
           <motion.h2
             variants={fadeInUp}
             initial={reducedMotion ? {} : "hidden"}
-            animate={featuresInView && !reducedMotion ? "visible" : {}}
+            animate={featuresVisible ? "visible" : {}}
             className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-neon-cyan to-organic-green bg-clip-text text-transparent"
           >
             Our Expertise
@@ -214,7 +248,7 @@ export default function Home() {
           <motion.div
             variants={staggerContainer}
             initial={reducedMotion ? {} : "hidden"}
-            animate={featuresInView && !reducedMotion ? "visible" : {}}
+            animate={featuresVisible ? "visible" : {}}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
             {features.map((feature, index) => (
@@ -233,7 +267,7 @@ export default function Home() {
               >
                 <motion.div
                   initial={reducedMotion ? {} : { scale: 0 }}
-                  animate={featuresInView && !reducedMotion ? { scale: 1 } : {}}
+                  animate={featuresVisible ? { scale: 1 } : {}}
                   transition={{
                     delay: index * 0.1 + 0.5,
                     duration: 0.5,

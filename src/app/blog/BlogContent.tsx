@@ -31,7 +31,7 @@ export default function BlogContent({ posts }: BlogContentProps) {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl font-bold mb-8 font-geist-sans">Blog</h1>
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-neon-cyan to-organic-green bg-clip-text text-transparent">Blog</h1>
           <p className="text-lg text-organic-green">Latest thoughts and insights from the cosmic frontier</p>
         </motion.div>
 

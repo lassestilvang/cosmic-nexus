@@ -104,7 +104,7 @@ export const useScrollAnimation = () => {
   const ref = useRef(null);
   const inView = useInView(ref, {
     once: true,
-    margin: "-100px"
+    margin: "0px"
   });
 
   return { ref, inView };
