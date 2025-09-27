@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
 
     const data: WeatherData = await response.json();
     return NextResponse.json(data);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

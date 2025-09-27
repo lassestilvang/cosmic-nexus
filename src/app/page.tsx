@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   fadeInUp,
-  scaleIn,
   staggerContainer,
   staggerItem,
   prefersReducedMotion,
@@ -80,9 +79,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-cosmic-blue text-neon-cyan">
       {/* Hero Section */}
-      <section
-        className="min-h-screen flex items-center justify-center relative overflow-hidden"
-      >
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={reducedMotion ? {} : { opacity: 0, y: 50 }}
@@ -98,6 +95,7 @@ export default function Home() {
             >
               Cosmic Nexus
             </motion.h1>
+
             <motion.p
               initial={reducedMotion ? {} : { opacity: 0, y: 30 }}
               animate={heroVisible ? { opacity: 1, y: 0 } : {}}
@@ -130,7 +128,11 @@ export default function Home() {
                 </motion.button>
               </Link>
               <motion.button
-                onClick={() => document.getElementById('expertise')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() =>
+                  document
+                    .getElementById("expertise")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
                 whileHover={
                   reducedMotion
                     ? {}

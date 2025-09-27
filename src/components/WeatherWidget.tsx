@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import useSWR from 'swr';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 interface WeatherData {
   current: {
@@ -102,9 +103,11 @@ export default function WeatherWidget() {
         <h3 className="text-lg font-bold text-neon-cyan">Current Weather</h3>
         <div className="text-3xl">
           {current.weather[0].icon && (
-            <img
+            <Image
               src={`https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`}
               alt={current.weather[0].description}
+              width={48}
+              height={48}
               className="w-12 h-12"
             />
           )}
@@ -123,14 +126,16 @@ export default function WeatherWidget() {
       <div className="space-y-2">
         <h4 className="text-sm font-semibold text-holographic-purple">3-Day Forecast</h4>
         <div className="grid grid-cols-3 gap-2">
-          {forecast.map((day, index) => (
+          {forecast.map((day) => (
             <div key={day.dt} className="text-center">
               <div className="text-xs text-neon-cyan/60 mb-1">
                 {new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
               </div>
-              <img
+              <Image
                 src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`}
                 alt={day.weather[0].main}
+                width={32}
+                height={32}
                 className="w-8 h-8 mx-auto mb-1"
               />
               <div className="text-sm font-semibold text-organic-green">

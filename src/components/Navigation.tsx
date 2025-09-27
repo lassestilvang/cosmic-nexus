@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { hoverLift, hoverGlow, prefersReducedMotion } from "../lib/animations";
+import { hoverLift, prefersReducedMotion } from "../lib/animations";
 import HamburgerMenu from "./HamburgerMenu";
 import MobileMenu from "./MobileMenu";
 
